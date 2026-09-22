@@ -29,6 +29,19 @@ npm run serve        # preview the static build at http://localhost:4173
 any static host — Netlify, Vercel, Cloudflare Pages, S3 + CloudFront, or plain
 nginx. No server runtime is required.
 
+### Preview builds
+
+Some hosts reserve paths beginning with an underscore, which collides with
+Nuxt's `_nuxt/`, `_payload.json` and `__sitemap__/`. For those, build with:
+
+```bash
+PREVIEW_BUILD=1 npm run generate
+```
+
+That moves build assets to `nuxt-assets/` and drops the two underscore-prefixed
+extras. Everything else — pages, metadata, sitemap, structured data — is
+identical. **Leave the variable unset for production deploys.**
+
 **Host settings**
 
 | Setting | Value |

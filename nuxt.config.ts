@@ -20,10 +20,26 @@ const staticRoutes = [
   ...industries.map((i) => `/industries/${i.slug}`),
 ]
 
+/**
+ * Preview build (PREVIEW_BUILD=1) — for hosts that reserve paths beginning
+ * with an underscore, such as Claude Artifacts. It moves the build asset
+ * directory off `_nuxt/` and drops the two underscore-prefixed extras
+ * (`_payload.json`, `__sitemap__/style.xsl`). Production builds are
+ * unaffected: leave the variable unset and nothing below changes.
+ */
+const isPreview = process.env.PREVIEW_BUILD === '1'
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: false },
+
+  experimental: {
+    // Payload files are emitted as `_payload.json`; without them Nuxt
+    // re-renders on client navigation instead, which is fine here because all
+    // page content is bundled rather than fetched.
+    payloadExtraction: !isPreview,
+  },
 
   modules: ['@nuxtjs/sitemap', '@nuxtjs/robots'],
 
@@ -61,6 +77,10 @@ export default defineNuxtConfig({
   sitemap: {
     autoLastmod: true,
     exclude: ['/thank-you'],
+    // `xsl` takes a stylesheet path or `false` — never `true`. The default
+    // stylesheet is emitted to `__sitemap__/style.xsl` and only prettifies the
+    // XML for humans, so a preview build drops it and production keeps it.
+    ...(isPreview ? { xsl: false as const } : {}),
   },
 
   robots: {
@@ -68,6 +88,8 @@ export default defineNuxtConfig({
   },
 
   app: {
+    buildAssetsDir: isPreview ? '/nuxt-assets/' : '/_nuxt/',
+
     head: {
       htmlAttrs: { lang: 'en-US' },
       meta: [
