@@ -1,0 +1,42 @@
+{
+  "name": "clariauth",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ClariAuth — marketing site for healthcare insurance operations support (eligibility verification, benefits investigation, prior authorization, payer follow-up).",
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "serve": "serve .output/public -l 4173",
+    "audit:seo": "node scripts/audit-seo.mjs",
+    "postinstall": "nuxt prepare"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lifontechs/clariauth.git"
+  },
+  "keywords": [
+    "healthcare",
+    "prior-authorization",
+    "eligibility-verification",
+    "benefits-verification",
+    "nuxt"
+  ],
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/lifontechs/clariauth/issues"
+  },
+  "homepage": "https://clariauth.com",
+  "dependencies": {
+    "@nuxtjs/robots": "^6.2.3",
+    "@nuxtjs/sitemap": "^8.5.1",
+    "nuxt": "^4.5.2",
+    "vue": "^3.5.43",
+    "vue-router": "^5.3.1"
+  },
+  "devDependencies": {
+    "playwright": "^1.63.0"
+  }
+}
