@@ -22,5 +22,6 @@ npm-debug.log*
 .vscode
 *.swp
 
-# Local audit output
+# Local audit / preview output
 /shots
+/.preview

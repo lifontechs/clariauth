@@ -2,7 +2,7 @@
   "name": "clariauth",
   "version": "1.0.0",
   "private": true,
-  "description": "ClariAuth — marketing site for healthcare insurance operations support (eligibility verification, benefits investigation, prior authorization, payer follow-up).",
+  "description": "ClariAuth \u2014 marketing site for healthcare insurance operations support (eligibility verification, benefits investigation, prior authorization, payer follow-up).",
   "type": "module",
   "scripts": {
     "dev": "nuxt dev",
@@ -11,7 +11,8 @@
     "preview": "nuxt preview",
     "serve": "serve .output/public -l 4173",
     "audit:seo": "node scripts/audit-seo.mjs",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "build:preview": "nuxt generate && node scripts/build-preview.mjs"
   },
   "repository": {
     "type": "git",

@@ -29,19 +29,6 @@ npm run serve        # preview the static build at http://localhost:4173
 any static host — Netlify, Vercel, Cloudflare Pages, S3 + CloudFront, or plain
 nginx. No server runtime is required.
 
-### Preview builds
-
-Some hosts reserve paths beginning with an underscore, which collides with
-Nuxt's `_nuxt/`, `_payload.json` and `__sitemap__/`. For those, build with:
-
-```bash
-PREVIEW_BUILD=1 npm run generate
-```
-
-That moves build assets to `nuxt-assets/` and drops the two underscore-prefixed
-extras. Everything else — pages, metadata, sitemap, structured data — is
-identical. **Leave the variable unset for production deploys.**
-
 **Host settings**
 
 | Setting | Value |
@@ -49,6 +36,25 @@ identical. **Leave the variable unset for production deploys.**
 | Build command | `npm run generate` |
 | Publish directory | `.output/public` |
 | Node version | 20 or newer |
+
+### Shareable preview file
+
+```bash
+npm run build:preview     # → .preview/clariauth-preview.html
+```
+
+Produces the whole site as **one self-contained HTML file** — every page,
+stylesheet, font and image inlined, with no external references. Useful for
+emailing a review copy, opening from disk, or hosting anywhere that serves a
+page from a path other than the origin root (where a normal build's absolute
+`/_nuxt/…` references would 404 and the site would render unstyled).
+
+It stitches the prerendered markup of all 20 routes into one document and swaps
+them with a small hash router, so navigation works offline. The Nuxt client
+bundle is left out — meaning the contact form does not submit in the preview.
+Everything else is the real prerendered output.
+
+This is a review artifact only; production deploys use `npm run generate`.
 
 ---
 
