@@ -14,7 +14,7 @@ withDefaults(
 </script>
 
 <template>
-  <div class="sh" :class="[`sh--${align}`, { 'sh--light': light }]">
+  <div class="sh" :class="[`sh--${align}`, { 'sh--light': light }]" data-reveal>
     <p v-if="eyebrow" class="eyebrow" :class="{ 'eyebrow--light': light }">{{ eyebrow }}</p>
     <component :is="level === 1 ? 'h1' : 'h2'" class="sh__title">{{ title }}</component>
     <p v-if="lede" class="lede sh__lede">{{ lede }}</p>

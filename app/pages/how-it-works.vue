@@ -101,7 +101,7 @@ const expectations = [
           lede="Anyone guaranteeing approvals or revenue outcomes is selling something they don’t control. Here is the honest split."
         />
 
-        <div class="grid grid--2">
+        <div class="grid grid--2" data-reveal-group>
           <div
             v-for="e in expectations"
             :key="e.title"

@@ -62,7 +62,7 @@ useJsonLd({
           lede="The specific pressures that shape insurance and authorization work in this specialty."
         />
 
-        <div class="grid grid--2">
+        <div class="grid grid--2" data-reveal-group>
           <div v-for="c in ind.challenges" :key="c.title" class="card chal">
             <h3>{{ c.title }}</h3>
             <p>{{ c.body }}</p>
@@ -104,7 +104,7 @@ useJsonLd({
           lede="Start with one, or combine them — most providers in this specialty use two or three together."
         />
 
-        <div class="grid grid--4">
+        <div class="grid grid--4" data-reveal-group>
           <ServiceCard v-for="s in relatedServices" :key="s.slug" :service="s" compact />
         </div>
       </div>

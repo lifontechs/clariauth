@@ -84,7 +84,7 @@ useJsonLd({
           lede="Eligibility, benefits and authorization work follows the same underlying logic wherever a payer sits between a provider and the care they deliver. These are specialties we regularly support."
         />
 
-        <div class="grid grid--3">
+        <div class="grid grid--3" data-reveal-group>
           <NuxtLink
             v-for="i in otherIndustries"
             :key="i.slug"

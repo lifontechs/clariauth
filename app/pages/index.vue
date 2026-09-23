@@ -72,20 +72,22 @@ useJsonLd({
     <section class="hero">
       <div class="container hero__inner">
         <div class="hero__text">
-          <p class="hero__eyebrow">Specialized insurance support for healthcare providers</p>
+          <p class="hero__eyebrow anim-rise">
+            Specialized insurance support for healthcare providers
+          </p>
 
-          <h1 class="hero__title">
+          <h1 class="hero__title anim-rise anim-d1">
             We Handle the Authorizations.
             <span class="hero__accent">You Focus on Patient Care.</span>
           </h1>
 
-          <p class="hero__lede">
+          <p class="hero__lede anim-rise anim-d2">
             Eligibility verification, benefits investigation, prior authorization and payer
             follow-up — so your practice runs smoother and your team spends more time
             on patients.
           </p>
 
-          <div class="btn-row hero__actions">
+          <div class="btn-row hero__actions anim-rise anim-d3">
             <NuxtLink to="/contact" class="btn btn--navy btn--lg">
               Request a Consultation
             </NuxtLink>
@@ -94,7 +96,7 @@ useJsonLd({
             </NuxtLink>
           </div>
 
-          <ul class="hero__proof">
+          <ul class="hero__proof anim-rise anim-d4">
             <li v-for="p in heroProofPoints" :key="p.title">
               <AppIcon :name="p.icon" :size="26" class="hero__proof-icon" />
               <span>{{ p.title }}</span>
@@ -107,7 +109,10 @@ useJsonLd({
            the copy on narrow screens. With a photograph the script line
            overlays it, as in the design; without one the media column stacks
            the script above the verification card so nothing collides. -->
-      <div class="hero__media" :class="heroImage.src ? 'hero__media--photo' : 'hero__media--panel'">
+      <div
+        class="hero__media anim-rise anim-d3"
+        :class="heroImage.src ? 'hero__media--photo' : 'hero__media--panel'"
+      >
         <p class="hero__script" aria-hidden="true">
           {{ heroScript }}
           <svg class="hero__script-rule" viewBox="0 0 120 12" fill="none" aria-hidden="true">
@@ -144,7 +149,7 @@ useJsonLd({
           lede="We are not a general billing company and not a virtual assistant service. We do the insurance-side work that sits between a referral and delivered care — and we do it properly."
         />
 
-        <div class="grid grid--3 svc-grid">
+        <div class="grid grid--3 svc-grid" data-reveal-group>
           <ServiceCard v-for="s in services" :key="s.slug" :service="s" />
 
           <NuxtLink to="/services" class="card card--link svc-all">
@@ -164,7 +169,7 @@ useJsonLd({
     <!-- ========================== WHO WE SUPPORT ======================= -->
     <section class="section section--alt">
       <div class="container">
-        <div class="who">
+        <div class="who" data-reveal-group>
           <div class="who__text">
             <p class="eyebrow">Who we support</p>
             <h2>Built for the people who carry the administrative load</h2>
@@ -201,7 +206,7 @@ useJsonLd({
           lede="What separates us is focus: one workflow, done by people who know payer behaviour, reported back in a form your team can actually act on."
         />
 
-        <div class="grid grid--3">
+        <div class="grid grid--3" data-reveal-group>
           <div v-for="d in differentiators" :key="d.title" class="card why">
             <span class="card__icon">
               <AppIcon :name="d.icon" :size="24" />
@@ -245,7 +250,7 @@ useJsonLd({
           lede="These are the two lines we know most deeply — but the underlying work is the same wherever insurance sits between a provider and the care they deliver, and we support healthcare organizations of many kinds."
         />
 
-        <div class="ind-grid">
+        <div class="ind-grid" data-reveal-group>
           <NuxtLink
             v-for="i in focusIndustries"
             :key="i.slug"

@@ -140,6 +140,34 @@ for (const route of ROUTES) {
 const runtime = `
 (function () {
   var routes = document.querySelectorAll('.pv-route');
+
+  // Mirrors app/plugins/motion.client.ts so the preview demonstrates the same
+  // restrained motion. Reveal styles are gated behind html.js-anim, so if this
+  // block never runs the content simply renders visible.
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var io = null;
+  if (!reduced.matches) {
+    document.documentElement.classList.add('js-anim');
+    io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-in');
+        io.unobserve(e.target);
+      });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.05 });
+    window.addEventListener('scroll', function () {
+      document.querySelectorAll('.pv-route:not([hidden]) .hdr').forEach(function (h) {
+        h.classList.toggle('is-scrolled', window.scrollY > 8);
+      });
+    }, { passive: true });
+  }
+  function reveal(page) {
+    if (!io || !page) return;
+    page.querySelectorAll('[data-reveal], [data-reveal-group]').forEach(function (el) {
+      if (!el.classList.contains('is-in')) io.observe(el);
+    });
+  }
+
   function show(path) {
     var found = false;
     routes.forEach(function (el) {
@@ -153,6 +181,7 @@ const runtime = `
       : 'ClariAuth';
     window.scrollTo(0, 0);
     closeDrawer();
+    reveal(document.querySelector('.pv-route:not([hidden])'));
   }
   function current() {
     var h = location.hash.replace(/^#/, '');

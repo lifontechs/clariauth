@@ -112,7 +112,7 @@ const principles = [
           lede="We deliberately do one kind of work. That focus is what lets us build real depth in payer behaviour rather than shallow familiarity across a dozen unrelated services."
         />
 
-        <div class="grid grid--2">
+        <div class="grid grid--2" data-reveal-group>
           <div v-for="p in principles" :key="p.title" class="card principle">
             <span class="card__icon">
               <AppIcon :name="p.icon" :size="24" />

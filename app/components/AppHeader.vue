@@ -92,6 +92,14 @@ const isActive = (to: string) => route.path === to || route.path.startsWith(to +
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: saturate(180%) blur(12px);
   border-bottom: 1px solid var(--line);
+  transition: box-shadow 0.25s var(--ease), background 0.25s var(--ease);
+}
+
+/* Lifts off the page once scrolling starts. Added by the motion plugin, so
+   the header is simply flat when JavaScript is unavailable. */
+.hdr.is-scrolled {
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 1px 16px rgba(10, 30, 70, 0.08);
 }
 
 .hdr__inner {

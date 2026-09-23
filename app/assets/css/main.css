@@ -501,6 +501,69 @@ p {
 }
 
 /* --------------------------------------------------------------------------
+   Motion
+
+   Two rules govern everything here:
+
+   1. Content is never hidden by default. Scroll reveals are gated behind
+      `html.js-anim`, a class only added by the client plugin. Without
+      JavaScript — or for a crawler, or in the offline preview — every element
+      renders in its final, visible state.
+   2. The plugin does not add that class at all when the visitor prefers
+      reduced motion, so reveals never run for them. The media query below is
+      a second line of defence for the CSS-only hero entrance.
+   -------------------------------------------------------------------------- */
+
+@keyframes ca-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Hero entrance: CSS-only, so it runs on first paint with no JS involved. */
+.anim-rise {
+  animation: ca-rise 0.6s var(--ease) both;
+}
+
+.anim-d1 { animation-delay: 0.06s; }
+.anim-d2 { animation-delay: 0.12s; }
+.anim-d3 { animation-delay: 0.18s; }
+.anim-d4 { animation-delay: 0.26s; }
+.anim-d5 { animation-delay: 0.34s; }
+
+/* Scroll reveals — inert until the plugin opts in. */
+html.js-anim [data-reveal],
+html.js-anim [data-reveal-group] > * {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.55s var(--ease), transform 0.55s var(--ease);
+}
+
+html.js-anim [data-reveal].is-in,
+html.js-anim [data-reveal-group].is-in > * {
+  opacity: 1;
+  transform: none;
+}
+
+/* Children of a group trail each other slightly. */
+html.js-anim [data-reveal-group].is-in > *:nth-child(2) { transition-delay: 0.07s; }
+html.js-anim [data-reveal-group].is-in > *:nth-child(3) { transition-delay: 0.14s; }
+html.js-anim [data-reveal-group].is-in > *:nth-child(4) { transition-delay: 0.21s; }
+html.js-anim [data-reveal-group].is-in > *:nth-child(5) { transition-delay: 0.28s; }
+html.js-anim [data-reveal-group].is-in > *:nth-child(6) { transition-delay: 0.35s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-rise {
+    animation: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
    Utilities
    -------------------------------------------------------------------------- */
 .sr-only {

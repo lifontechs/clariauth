@@ -88,7 +88,7 @@ useJsonLd({
           lede="The specific work we carry out on each request."
         />
 
-        <div class="grid grid--2">
+        <div class="grid grid--2" data-reveal-group>
           <div v-for="inc in s.includes" :key="inc.title" class="card inc">
             <h3>{{ inc.title }}</h3>
             <p>{{ inc.body }}</p>
@@ -140,7 +140,7 @@ useJsonLd({
         <p class="center lede mt-2 measure-narrow" style="margin-inline: auto">
           These services work well together — most providers combine two or three.
         </p>
-        <div class="grid grid--4 mt-5">
+        <div class="grid grid--4 mt-5" data-reveal-group>
           <ServiceCard v-for="o in otherServices" :key="o.slug" :service="o" compact />
         </div>
       </div>
