@@ -24,14 +24,33 @@ export const primaryNav = [
 ]
 
 /**
- * Value props shown under the hero. Each one is an operational statement we can
- * stand behind — no guaranteed approval rates or revenue claims.
+ * Hero photograph.
+ *
+ * Drop a landscape image into `public/img/` and set `src` to its path — the
+ * hero switches from the branded gradient panel to the photo automatically.
+ * Aim for roughly 1400x1200 or larger; it is cropped with object-fit: cover
+ * and anchored by `focus`, so keep the subject away from the left edge where
+ * the copy column overlaps on smaller screens.
+ */
+export const heroImage = {
+  src: '' as string,
+  alt: 'A clinician reviewing patient insurance information on a laptop',
+  /** object-position for the crop, e.g. 'center', '60% 40%' */
+  focus: '58% 30%',
+}
+
+/** Handwritten accent line sitting over the hero image. */
+export const heroScript = 'Behind Every Approval is a Healthier Tomorrow'
+
+/**
+ * The four benefit points running under the hero buttons. These are outcome
+ * statements rather than guarantees — no approval rates, no revenue promises.
  */
 export const heroProofPoints = [
-  { icon: 'shield', title: 'Accurate verification', body: 'Coverage and benefits confirmed at the source.' },
-  { icon: 'clock', title: 'Consistent follow-up', body: 'Pending authorizations tracked until they close.' },
-  { icon: 'portal', title: 'Payer portal fluency', body: 'We work the portals and phone queues for you.' },
-  { icon: 'chart', title: 'Fewer surprises', body: 'Requirements caught before the date of service.' },
+  { icon: 'shield', title: 'Accurate Insurance\nInformation' },
+  { icon: 'clock', title: 'Faster\nApprovals' },
+  { icon: 'team', title: 'Fewer\nDenials' },
+  { icon: 'chart', title: 'A More Efficient\nRevenue Cycle' },
 ]
 
 export const differentiators = [

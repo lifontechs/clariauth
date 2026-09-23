@@ -1,5 +1,12 @@
 <script setup lang="ts">
-import { site, heroProofPoints, differentiators, painPoints } from '~/data/site'
+import {
+  site,
+  heroProofPoints,
+  heroImage,
+  heroScript,
+  differentiators,
+  painPoints,
+} from '~/data/site'
 import { services } from '~/data/services'
 import { industries, focusIndustries } from '~/data/industries'
 import { featuredFaqs } from '~/data/faqs'
@@ -65,44 +72,64 @@ useJsonLd({
     <section class="hero">
       <div class="container hero__inner">
         <div class="hero__text">
-          <p class="eyebrow">
-            Insurance operations support for U.S. healthcare providers
-          </p>
+          <p class="hero__eyebrow">Specialized insurance support for healthcare providers</p>
 
-          <h1>
-            Simplifying insurance operations.
-            <span class="hero__accent">Empowering patient care.</span>
+          <h1 class="hero__title">
+            We Handle the Authorizations.
+            <span class="hero__accent">You Focus on Patient Care.</span>
           </h1>
 
-          <p class="lede hero__lede">
-            Reliable eligibility verification, benefits investigation and prior authorization
-            support for healthcare providers across the United States — so your team spends
-            less time on payer portals and more time on patients.
+          <p class="hero__lede">
+            Eligibility verification, benefits investigation, prior authorization and payer
+            follow-up — so your practice runs smoother and your team spends more time
+            on patients.
           </p>
 
           <div class="btn-row hero__actions">
-            <NuxtLink to="/contact" class="btn btn--primary btn--lg">
+            <NuxtLink to="/contact" class="btn btn--navy btn--lg">
               Request a Consultation
             </NuxtLink>
             <NuxtLink to="/services" class="btn btn--outline btn--lg">
-              Explore Our Services
+              Our Services
             </NuxtLink>
           </div>
 
           <ul class="hero__proof">
             <li v-for="p in heroProofPoints" :key="p.title">
-              <span class="hero__proof-icon">
-                <AppIcon :name="p.icon" :size="20" />
-              </span>
-              <span>
-                <strong>{{ p.title }}</strong>
-                <span>{{ p.body }}</span>
-              </span>
+              <AppIcon :name="p.icon" :size="26" class="hero__proof-icon" />
+              <span>{{ p.title }}</span>
             </li>
           </ul>
         </div>
+      </div>
 
-        <div class="hero__visual">
+      <!-- Bleeds to the right edge of the viewport on desktop; stacks below
+           the copy on narrow screens. With a photograph the script line
+           overlays it, as in the design; without one the media column stacks
+           the script above the verification card so nothing collides. -->
+      <div class="hero__media" :class="heroImage.src ? 'hero__media--photo' : 'hero__media--panel'">
+        <p class="hero__script" aria-hidden="true">
+          {{ heroScript }}
+          <svg class="hero__script-rule" viewBox="0 0 120 12" fill="none" aria-hidden="true">
+            <path
+              d="M2 9C22 3 74 1 118 6"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
+          </svg>
+        </p>
+
+        <img
+          v-if="heroImage.src"
+          :src="heroImage.src"
+          :alt="heroImage.alt"
+          class="hero__photo"
+          :style="{ objectPosition: heroImage.focus }"
+          fetchpriority="high"
+          decoding="async"
+        >
+        <div v-else class="hero__panel">
           <HeroPanel />
         </div>
       </div>
@@ -310,26 +337,42 @@ useJsonLd({
 <style scoped>
 /* ------------------------------- Hero ------------------------------- */
 .hero {
-  background:
-    radial-gradient(820px 420px at 78% -6%, rgba(11, 79, 216, 0.1), transparent 62%),
-    linear-gradient(180deg, var(--surface-tint) 0%, #ffffff 82%);
-  padding-block: clamp(44px, 3.5vw + 26px, 84px) clamp(52px, 4vw + 30px, 96px);
+  position: relative;
+  background: linear-gradient(115deg, #eef4fb 0%, #e8f0f9 46%, #dfeaf6 100%);
   border-bottom: 1px solid var(--line);
-  /* The hero panel's decorative glow and floating chips deliberately sit
-     outside their column. `clip` (not `hidden`) trims them at the viewport
-     edge without creating a scroll container. */
+  /* The hero panel's decorative glow deliberately overflows its column.
+     `clip` trims it at the hero's edge without creating a scroll container
+     (which `hidden` would, and which `visible` would let reach the page). */
   overflow-x: clip;
 }
 
 .hero__inner {
-  display: grid;
-  grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr);
-  gap: 64px;
-  align-items: center;
+  padding-block: clamp(44px, 3.4vw + 26px, 78px);
 }
 
-.hero h1 {
-  margin-top: 16px;
+/* Copy sits in the left half; the photo bleeds off the right edge. */
+.hero__text {
+  position: relative;
+  z-index: 2;
+  max-width: 560px;
+}
+
+.hero__eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #5b708d;
+}
+
+.hero__title {
+  margin-top: 18px;
+  font-size: clamp(2.15rem, 1.2rem + 2.9vw, 3.3rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  color: var(--navy-800);
 }
 
 .hero__accent {
@@ -338,71 +381,178 @@ useJsonLd({
 }
 
 .hero__lede {
-  margin-top: 22px;
-  max-width: 56ch;
+  margin-top: 20px;
+  max-width: 46ch;
+  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.1rem);
+  line-height: 1.6;
+  color: #46566e;
 }
 
 .hero__actions {
-  margin-top: 32px;
+  margin-top: 30px;
 }
 
+/* Four inline benefit points, icon beside a two-line label. */
 .hero__proof {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px 26px;
-  margin-top: 44px;
-  padding-top: 34px;
-  border-top: 1px solid var(--line);
+  grid-template-columns: repeat(4, auto);
+  justify-content: start;
+  gap: 26px;
+  margin-top: 40px;
 }
 
 .hero__proof li {
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
+  align-items: center;
+  gap: 10px;
 }
 
 .hero__proof-icon {
-  display: grid;
-  place-items: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  background: var(--blue-50);
   color: var(--blue-600);
   flex-shrink: 0;
+  stroke-width: 1.5;
 }
 
-.hero__proof li > span:last-child {
-  display: grid;
-  gap: 1px;
-  line-height: 1.4;
-}
-
-.hero__proof strong {
+.hero__proof span {
+  /* The labels carry an explicit line break in the data. */
+  white-space: pre-line;
   font-family: var(--font-display);
-  font-size: 0.93rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.32;
   color: var(--navy-800);
 }
 
-.hero__proof span span {
-  font-size: 0.86rem;
-  color: var(--muted);
+/* ------------------------------ Hero media --------------------------- */
+.hero__media {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: 46%;
+  z-index: 1;
 }
 
-@media (max-width: 1040px) {
-  .hero__inner {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 54px;
-  }
-  .hero__visual {
-    order: 2;
-  }
+.hero__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-@media (max-width: 560px) {
+/* Feathers the photo into the copy column so the text stays readable. Only
+   needed in photo mode — the panel fallback has nothing to blend. */
+.hero__media--photo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(90deg, #e8f0f9 0%, rgba(232, 240, 249, 0.55) 22%, transparent 52%);
+  pointer-events: none;
+}
+
+.hero__script {
+  font-family: 'Nothing You Could Do', cursive;
+  font-size: clamp(1rem, 0.8rem + 0.6vw, 1.35rem);
+  line-height: 1.45;
+  color: var(--blue-600);
+  max-width: 190px;
+}
+
+.hero__script-rule {
+  display: block;
+  width: 86px;
+  height: 11px;
+  margin-top: 6px;
+  margin-left: auto;
+  color: var(--blue-500);
+}
+
+/* Photo mode: the script sits over the image, as in the design. */
+.hero__media--photo .hero__script {
+  position: absolute;
+  z-index: 2;
+  top: 13%;
+  right: 5%;
+  text-shadow: 0 1px 10px rgba(255, 255, 255, 0.85);
+}
+
+/* Panel mode: stacked, so the script never lands on the card. */
+.hero__media--panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+  padding: 28px 30px 28px 10px;
+}
+
+.hero__media--panel .hero__script {
+  align-self: flex-end;
+  text-align: right;
+  margin-right: 4px;
+}
+
+.hero__panel {
+  width: 100%;
+}
+
+/* Photo narrows before it is dropped below the copy. */
+@media (max-width: 1180px) {
+  .hero__media {
+    width: 42%;
+  }
+  .hero__text {
+    max-width: 500px;
+  }
   .hero__proof {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 16px;
+    grid-template-columns: repeat(2, auto);
+    gap: 18px 28px;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero__inner {
+    padding-bottom: 36px;
+  }
+  .hero__text {
+    max-width: none;
+  }
+  .hero__media {
+    position: relative;
+    inset: auto;
+    width: 100%;
+  }
+  .hero__media--photo {
+    height: clamp(280px, 52vw, 430px);
+  }
+  /* The feather runs top-to-bottom once the photo sits under the copy. */
+  .hero__media--photo::before {
+    background: linear-gradient(180deg, #e8f0f9 0%, rgba(232, 240, 249, 0.4) 18%, transparent 46%);
+  }
+  .hero__media--photo .hero__script {
+    top: 8%;
+    right: 6%;
+    max-width: 170px;
+  }
+  .hero__media--panel {
+    padding: 0 0 44px;
+  }
+  .hero__media--panel .hero__script {
+    display: none;
+  }
+}
+
+@media (max-width: 520px) {
+  /* Stacked buttons read as a pair only if they share a width. */
+  .hero__actions .btn {
+    flex: 1 1 100%;
+  }
+  .hero__proof {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 14px;
+  }
+  .hero__proof span {
+    font-size: 0.78rem;
+  }
+  .hero__script {
+    max-width: 140px;
   }
 }
 
