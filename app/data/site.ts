@@ -105,7 +105,7 @@ export const processSteps = [
   {
     number: '01',
     title: 'Send the request',
-    body: 'You send patient, payer and service details through the intake method that suits your team — your system, a secure shared worklist, or a simple request form.',
+    body: 'You send patient, payer and service details through an agreed secure intake method that suits your team — your system, or a secure shared worklist.',
     detail: ['Agreed intake method', 'Defined turnaround expectations', 'No new software for your staff to learn'],
   },
   {

@@ -71,10 +71,6 @@ export const faqs: Faq[] = [
     q: 'How do you report results back to us?',
     a: 'Every request comes back documented: what was verified or submitted, the outcome, reference and authorization numbers where available, approved units and date ranges, the source and date of verification, and clear flags on anything still outstanding or needing your team’s attention. The format and cadence are agreed with you during onboarding.',
   },
-  {
-    q: 'Where is your team located?',
-    a: 'We are a United States–focused insurance operations company and our team works U.S. business hours aligned to your schedule. Specifics about team structure, coverage hours and how your work would be staffed are covered in the consultation.',
-  },
 ]
 
 export const featuredFaqs = faqs.filter((f) => f.featured)

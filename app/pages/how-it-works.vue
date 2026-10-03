@@ -79,8 +79,8 @@ const expectations = [
             <div class="hiw__card">
               <AppIcon name="workflow" :size="22" />
               <p>
-                We work inside the intake method and reporting format you already use — your
-                system, a shared worklist, or a simple request form. Whichever suits your team.
+                We work through an agreed secure intake method and report back in the format
+                you already use — your system, or a shared worklist. Whichever suits your team.
               </p>
             </div>
           </div>

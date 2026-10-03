@@ -132,8 +132,8 @@ const principles = [
             <p class="eyebrow">Our commitment</p>
             <h2 class="mt-2">Accuracy, reliability, responsiveness</h2>
             <p class="lede mt-3">
-              These are the three things a provider actually needs from an insurance operations
-              partner, and they are the three things we hold ourselves to.
+              These are the four things a provider actually needs from an insurance operations
+              partner, and they are the four things we hold ourselves to.
             </p>
           </div>
 

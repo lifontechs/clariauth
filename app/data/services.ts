@@ -72,12 +72,12 @@ export const services: Service[] = [
     title: 'Benefits Verification & Investigation',
     icon: 'search',
     summary:
-      'Detailed benefit research — deductibles, co-insurance, limitations, exclusions and policy requirements — documented in a form your team can actually use.',
+      'Detailed benefit research — deductibles, coinsurance, limitations, exclusions and policy requirements — documented in a form your team can actually use.',
     intro:
       'Knowing a patient has coverage is not the same as knowing what that coverage will pay. Benefits investigation is the slower, more detailed work of establishing what the plan actually covers for the service you are about to deliver, what the patient will owe, and what conditions the policy attaches.',
     metaTitle: 'Benefits Verification & Investigation Services',
     metaDescription:
-      'Insurance benefits verification and investigation for healthcare providers — deductibles, co-insurance, visit limits, exclusions and policy requirements.',
+      'Insurance benefits verification and investigation for healthcare providers — deductibles, coinsurance, visit limits, exclusions and policy requirements.',
     problem: {
       heading: 'The problem this solves',
       body: 'Benefits investigation is the task that gets deferred. It takes real time on the phone or in a portal, it requires knowing which questions to ask for the specific service, and the answer is rarely on the first screen. So it gets skipped — and the cost shows up later as a write-off, a surprised patient, or a service delivered outside a limitation nobody checked.',
@@ -91,7 +91,7 @@ export const services: Service[] = [
     },
     includes: [
       { title: 'Coverage detail research', body: 'We establish what the plan covers for the specific service, place of service and provider type involved — not a generic benefit summary.' },
-      { title: 'Deductible and out-of-pocket status', body: 'Individual and family deductible, amount met to date, co-insurance, copay and out-of-pocket maximum status.' },
+      { title: 'Deductible and out-of-pocket status', body: 'Individual and family deductible, amount met to date, coinsurance, copay and out-of-pocket maximum status.' },
       { title: 'Limitations and caps', body: 'Visit limits, unit limits, frequency restrictions, annual and lifetime maximums, and how much of each has already been used.' },
       { title: 'Exclusions', body: 'What the policy will not cover, including service-specific and diagnosis-specific exclusions that routinely surprise providers.' },
       { title: 'Policy requirements', body: 'Referral requirements, network status, medical necessity conditions, site-of-service rules and any documentation the plan will expect.' },
@@ -99,7 +99,7 @@ export const services: Service[] = [
     ],
     deliverables: [
       'Service-specific benefit detail, not a generic summary',
-      'Deductible, co-insurance, copay and out-of-pocket status',
+      'Deductible, coinsurance, copay and out-of-pocket status',
       'Visit, unit and frequency limits with amounts used to date',
       'Documented exclusions and limitations',
       'Referral, network and medical-necessity requirements',
@@ -112,16 +112,16 @@ export const services: Service[] = [
   },
   {
     slug: 'prior-authorization-support',
-    name: 'Prior Authorization & Pre-Certification',
-    title: 'Prior Authorization & Pre-Certification Support',
+    name: 'Prior Authorization & Precertification',
+    title: 'Prior Authorization & Precertification Support',
     icon: 'check',
     summary:
       'Requirements identified, requests prepared and submitted where applicable, and pending authorizations followed until they reach a decision.',
     intro:
       'Prior authorization is where administrative burden concentrates. It is not one task but a chain of them — determine whether authorization is required, find the current payer requirement, assemble what the payer wants, submit it the way that payer accepts, and then chase it. We handle that chain end to end.',
-    metaTitle: 'Prior Authorization & Pre-Certification Support',
+    metaTitle: 'Prior Authorization & Precertification Support',
     metaDescription:
-      'Prior authorization and pre-certification support for U.S. providers — requirement research, request submission, payer follow-up and status tracking.',
+      'Prior authorization and precertification support for U.S. providers — requirement research, request submission, payer follow-up and status tracking.',
     problem: {
       heading: 'The problem this solves',
       body: 'Authorization work is high-volume, interruption-driven and unforgiving. One missed requirement delays a patient; one unchased pending request becomes a denial. It is also the role most exposed to turnover — when an experienced authorization coordinator leaves, the knowledge leaves with them.',
@@ -222,7 +222,7 @@ export const services: Service[] = [
     },
     includes: [
       { title: 'Authorization-required determination', body: 'A clear yes or no for the specific service, payer, plan and place of service — not a general rule of thumb.' },
-      { title: 'CPT and service-specific research', body: 'Requirements researched at the code and service level, including the modifiers and site-of-service conditions that change the answer.' },
+      { title: 'CPT, HCPCS, and service-specific research', body: 'Requirements researched at the code and service level, including the modifiers and site-of-service conditions that change the answer.' },
       { title: 'Payer policy and guideline research', body: 'The current medical policy, clinical criteria and coverage guideline that governs the decision.' },
       { title: 'Documentation requirements', body: 'What the payer will expect to see — clinical notes, imaging, conservative-treatment history, forms and letters of medical necessity.' },
       { title: 'Sourced and dated findings', body: 'Every determination recorded with where it came from and when it was checked, so it can be defended and refreshed.' },

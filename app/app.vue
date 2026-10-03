@@ -40,7 +40,7 @@ useHead({
               'Insurance eligibility verification',
               'Benefits verification and investigation',
               'Prior authorization',
-              'Pre-certification',
+              'Precertification',
               'Payer portal follow-up',
               'Authorization requirements research',
             ],

@@ -25,7 +25,7 @@ export const industries: Industry[] = [
     focus: true,
     eyebrow: 'Area of particular experience',
     summary:
-      'Episodic authorizations, visit-limit tracking and managed-care requirements handled so referrals convert to start of care without delay.',
+      'Episodic authorizations, visit-limit tracking and managed-care requirements handled to help referrals move efficiently toward start of care.',
     intro:
       'Home health lives on turnaround. A referral that sits waiting on eligibility or authorization is a referral that may go to another agency — and an episode that starts before the authorization is confirmed is revenue at risk. This is one of the specialties we have focused on most closely, because the authorization pattern is distinctive and unforgiving.',
     metaTitle: 'Home Health Authorization & Verification Support',
@@ -61,7 +61,7 @@ export const industries: Industry[] = [
     focus: true,
     eyebrow: 'Area of particular experience',
     summary:
-      'High-volume advanced imaging authorizations, radiology benefit manager pathways and clinical-criteria requirements, handled at schedule speed.',
+      'High-volume advanced imaging authorizations, radiology benefit manager pathways and clinical-criteria requirements, managed with disciplined tracking of time-sensitive requests.',
     intro:
       'Advanced imaging is among the most heavily managed services in U.S. healthcare. Most MRI, CT, PET and nuclear studies require authorization, many run through a radiology benefit manager rather than the plan itself, and the criteria are specific. Volume is high and the window between order and appointment is short — which is exactly why this is a specialty we have concentrated on.',
     metaTitle: 'Radiology & Imaging Prior Authorization Services',

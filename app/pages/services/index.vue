@@ -27,7 +27,7 @@ useJsonLd({
   <div>
     <PageHero
       eyebrow="Services"
-      title="Insurance operations, handled end to end"
+      title="Insurance-side operations, handled end to end"
       lede="Five connected services covering the insurance-side work between a referral and delivered care. Take one, take all five, or start with the piece that hurts most."
       current="Services"
     />
