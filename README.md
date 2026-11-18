@@ -5,9 +5,10 @@ operations support company serving U.S. providers with eligibility
 verification, benefits investigation, prior authorization support, payer
 portal follow-up and authorization requirements research.
 
-Built with **Nuxt 4** and statically generated — every route is prerendered to
-real HTML, so crawlers and cold-outreach visitors get fully-formed markup with
-no JavaScript execution required.
+Built with **Nuxt 4**. Marketing pages are prerendered to real HTML at build
+time, so crawlers and cold-outreach visitors get fully-formed markup with no
+JavaScript execution required. Alongside them runs a small Nitro server that
+handles the contact form API and the leads inbox.
 
 ---
 
@@ -15,27 +16,97 @@ no JavaScript execution required.
 
 ```bash
 npm install
-npm run dev          # http://localhost:3000
+cp .env.example .env     # then fill in at least NUXT_ADMIN_TOKEN
+npm run dev              # http://localhost:3000
 ```
 
 ## Build and deploy
 
 ```bash
-npm run generate     # outputs a fully static site to .output/public
-npm run serve        # preview the static build at http://localhost:4173
+npm run build            # prerenders pages + bundles the server
+npm run start            # runs it at http://localhost:3000
 ```
 
-`.output/public` is a plain folder of HTML, CSS, JS and assets. Deploy it to
-any static host — Netlify, Vercel, Cloudflare Pages, S3 + CloudFront, or plain
-nginx. No server runtime is required.
+**This is no longer a static-only site.** It needs a Node runtime, because the
+contact form posts to its own API and submissions are stored server-side.
+`nuxt generate` has been removed on purpose — a static build would ship a form
+posting to an endpoint that does not exist.
 
 **Host settings**
 
 | Setting | Value |
 | --- | --- |
-| Build command | `npm run generate` |
-| Publish directory | `.output/public` |
+| Build command | `npm run build` |
+| Start command | `npm run start` |
 | Node version | 20 or newer |
+| Persistent disk | **Required** — see Database below |
+
+Suits Railway, Render, Fly.io, a VPS, or any Node host. Deploying to a
+serverless platform needs the database swap described below, because the
+filesystem there is wiped between invocations.
+
+### Environment variables
+
+Everything is in `.env.example`. The essentials:
+
+| Variable | Purpose |
+| --- | --- |
+| `NUXT_ADMIN_TOKEN` | Secret path segment for the leads inbox. **Required** to enable it. Minimum 24 characters. |
+| `NUXT_DATABASE_PATH` | Where the SQLite file lives. Must be on a persistent disk. |
+| `NUXT_SMTP_*` | SMTP host, port, credentials, from and to addresses for new-lead notifications. |
+
+Generate a token with `openssl rand -hex 32`.
+
+---
+
+## How a submission flows
+
+1. The form posts to **`POST /api/contact`**.
+2. The server re-validates every field, checks the honeypot, and rate-limits
+   to 5 submissions per IP per 10 minutes.
+3. The submission is written to the database.
+4. A notification email is sent — and **if mail fails, the request still
+   succeeds**. The lead is already stored, so an SMTP problem never becomes an
+   error for the person filling in the form. Those rows show as *not emailed*
+   in the inbox.
+5. The visitor lands on `/thank-you`, which is where to fire a conversion event.
+
+Client-side validation is for user experience only. The server re-checks
+everything, because anything can post to the endpoint.
+
+## Leads inbox
+
+Visit **`/inbox/<NUXT_ADMIN_TOKEN>`**.
+
+The URL is the password. There is no login, no cookie and no session — anyone
+holding the link can read every submission, so share it like a credential.
+
+Protections in place:
+
+- Wrong, missing or short token returns **404, never 403**, so the page is
+  indistinguishable from one that does not exist and the token cannot be
+  probed for.
+- Token comparison is timing-safe.
+- Unset or under-24-character token disables the inbox entirely and logs why.
+- Excluded from prerendering, the sitemap and `robots.txt`, and served with
+  `noindex, nofollow`.
+
+If the token ever leaks, change `NUXT_ADMIN_TOKEN` and restart — the old URL
+dies immediately.
+
+## Database
+
+Submissions live in SQLite at `NUXT_DATABASE_PATH`. Low volume, no extra
+vendor holding your lead data, and trivially backed up by copying the file.
+
+**It needs a persistent disk.** On an ephemeral or serverless filesystem the
+file is wiped on every deploy and submissions are silently lost. If you deploy
+somewhere ephemeral, point `server/utils/db.ts` at hosted Postgres instead —
+it is a single, self-contained module and the table schema is right at the top.
+
+Back up by copying the `.sqlite` file (and its `-wal` sidecar) while the
+server is stopped, or with `sqlite3 db.sqlite ".backup out.sqlite"` while it
+runs.
 
 ### Shareable preview file
 
@@ -58,34 +129,31 @@ This is a review artifact only; production deploys use `npm run generate`.
 
 ---
 
-## Wiring up the contact form
+## Using an external form service instead
 
-The contact form has no backend. It reads an endpoint from runtime config and
-**falls back to a prefilled `mailto:` link when none is set**, so a lead is
-never silently dropped.
-
-To send submissions to a real destination, set the environment variable at
-build time:
+The built-in API is the default. To send submissions to a third party instead
+— Formspree, HubSpot, your CRM — set an absolute URL:
 
 ```bash
-NUXT_PUBLIC_FORM_ENDPOINT="https://formspree.io/f/xxxxxxxx" npm run generate
+NUXT_PUBLIC_FORM_ENDPOINT="https://formspree.io/f/xxxxxxxx" npm run build
 ```
 
-Any endpoint accepting a JSON `POST` works — Formspree, Netlify Forms, HubSpot,
-Zapier, or your own CRM. On success the visitor is redirected to `/thank-you`,
-which is the page to fire a conversion event from.
-
-The form includes a honeypot field and client-side validation. **Validate
-again server-side** — client-side checks are for user experience, not security.
+Any endpoint accepting a JSON `POST` works. Note that this bypasses the
+database and the leads inbox entirely: submissions go to that service and
+nowhere else.
 
 ---
 
 ## Before go-live
 
 - [ ] Point `site.url` in `nuxt.config.ts` at the production domain if it is not `clariauth.com`
-- [ ] Set `NUXT_PUBLIC_FORM_ENDPOINT` in the host's build environment
+- [ ] Set `NUXT_ADMIN_TOKEN` to a long random value — without it the leads inbox stays disabled
+- [ ] Set `NUXT_SMTP_*` so new leads actually notify someone
+- [ ] Confirm `NUXT_DATABASE_PATH` sits on a **persistent** disk, then submit a test lead and check it survives a redeploy
+- [ ] Put a backup on the SQLite file — it is the only copy of your leads
 - [ ] Update `linkedin` in `app/data/site.ts` to the real company page URL
 - [ ] **Have `/privacy-policy` and `/terms` reviewed by counsel** — both ship as marked templates
+- [ ] Update the privacy policy to say submissions are stored on your own server, how long you keep them, and who can read them
 - [ ] Add a phone number to `app/data/site.ts` and the contact page if you want inbound calls
 - [ ] Verify the domain in Google Search Console and submit `/sitemap.xml`
 - [ ] Add analytics if wanted, and update the cookies section of the privacy policy to match

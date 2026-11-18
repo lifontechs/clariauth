@@ -4,6 +4,13 @@ import { site } from '~/data/site'
 const route = useRoute()
 const canonical = computed(() => site.url + (route.path === '/' ? '/' : route.path))
 
+/**
+ * The leads inbox is an internal tool, not part of the marketing site, so it
+ * renders without the public header, footer and skip link. The chrome lives
+ * here rather than in a layout, so `layout: false` on the page cannot do it.
+ */
+const isBare = computed(() => route.path.startsWith('/inbox'))
+
 useHead({
   titleTemplate: (title) => (title ? `${title} | ${site.name}` : `${site.name} — ${site.tagline}`),
   link: [{ rel: 'canonical', href: canonical }],
@@ -72,12 +79,17 @@ useHead({
 
 <template>
   <div class="app">
-    <a href="#main" class="skip-link">Skip to main content</a>
-    <AppHeader />
-    <main id="main">
+    <template v-if="isBare">
       <NuxtPage />
-    </main>
-    <AppFooter />
+    </template>
+    <template v-else>
+      <a href="#main" class="skip-link">Skip to main content</a>
+      <AppHeader />
+      <main id="main">
+        <NuxtPage />
+      </main>
+      <AppFooter />
+    </template>
   </div>
 </template>
 

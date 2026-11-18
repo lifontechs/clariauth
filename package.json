@@ -7,12 +7,12 @@
   "scripts": {
     "dev": "nuxt dev",
     "build": "nuxt build",
-    "generate": "nuxt generate",
+    "start": "node .output/server/index.mjs",
     "preview": "nuxt preview",
     "serve": "serve .output/public -l 4173",
     "audit:seo": "node scripts/audit-seo.mjs",
-    "postinstall": "nuxt prepare",
-    "build:preview": "nuxt generate && node scripts/build-preview.mjs"
+    "build:preview": "nuxt build && node scripts/build-preview.mjs",
+    "postinstall": "nuxt prepare"
   },
   "repository": {
     "type": "git",
@@ -33,6 +33,8 @@
   "dependencies": {
     "@nuxtjs/robots": "^6.2.3",
     "@nuxtjs/sitemap": "^8.5.1",
+    "better-sqlite3": "^13.2.0",
+    "nodemailer": "^10.6.0",
     "nuxt": "^4.5.2",
     "vue": "^3.5.43",
     "vue-router": "^5.3.1"

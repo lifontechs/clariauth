@@ -36,17 +36,36 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    // Server-only. Never exposed to the browser.
+
+    /** Secret path segment for the leads inbox at /inbox/<token>. */
+    adminToken: process.env.NUXT_ADMIN_TOKEN || '',
+
+    /** Where submissions are stored. A file path on a persistent disk. */
+    databasePath: process.env.NUXT_DATABASE_PATH || '.data/clariauth.sqlite',
+
+    smtp: {
+      host: process.env.NUXT_SMTP_HOST || '',
+      port: process.env.NUXT_SMTP_PORT || '587',
+      user: process.env.NUXT_SMTP_USER || '',
+      password: process.env.NUXT_SMTP_PASSWORD || '',
+      /** Envelope sender. Must be a domain the SMTP provider lets you send as. */
+      from: process.env.NUXT_SMTP_FROM || '',
+      /** Where new-lead notifications land. Defaults to the public address. */
+      to: process.env.NUXT_SMTP_TO || 'info@clariauth.com',
+    },
+
     public: {
-      // Where the contact form POSTs. Set NUXT_PUBLIC_FORM_ENDPOINT at build
-      // time (Formspree, HubSpot, Netlify Forms, your CRM endpoint, …).
-      // Empty = the form falls back to a prefilled mailto: link.
-      formEndpoint: '',
+      // The contact form posts here. Left relative so it works on any domain.
+      // An external endpoint (Formspree, HubSpot, a CRM) can still be used by
+      // setting NUXT_PUBLIC_FORM_ENDPOINT to an absolute URL instead.
+      formEndpoint: process.env.NUXT_PUBLIC_FORM_ENDPOINT || '/api/contact',
     },
   },
 
-  // Static generation: every route is prerendered to real HTML so crawlers
-  // receive fully-formed markup with no JS execution required.
   nitro: {
+    // Marketing pages are still prerendered to real HTML at build time; the
+    // API routes and the leads inbox are served dynamically alongside them.
     prerender: {
       crawlLinks: true,
       routes: [...staticRoutes, '/sitemap.xml'],
@@ -55,16 +74,25 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/**': { prerender: true },
+    // Prerender the marketing pages only. Listing them explicitly (rather than
+    // '/**') keeps the API and the inbox out of the static output — a
+    // prerendered inbox would bake submissions into public HTML.
+    ...Object.fromEntries(staticRoutes.map((r) => [r, { prerender: true }])),
+    '/api/**': { prerender: false },
+    '/inbox/**': {
+      prerender: false,
+      index: false,
+      headers: { 'x-robots-tag': 'noindex, nofollow, noarchive' },
+    },
   },
 
   sitemap: {
     autoLastmod: true,
-    exclude: ['/thank-you'],
+    exclude: ['/thank-you', '/inbox/**'],
   },
 
   robots: {
-    disallow: ['/thank-you'],
+    disallow: ['/thank-you', '/inbox/'],
   },
 
   app: {

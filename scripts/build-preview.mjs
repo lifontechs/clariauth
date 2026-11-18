@@ -66,10 +66,15 @@ const toDistPath = (url, fromDir) => {
 // Every stylesheet the build produced, with its url() assets inlined. Route
 // pages each link a subset; collecting all of them once means any page works
 // however the user reaches it.
+//
+// The leads inbox is not one of the stitched routes, so its chunk is skipped:
+// the preview is a marketing artifact and has no business carrying styles for
+// an internal tool.
 const cssDir = join(DIST, '_nuxt')
+const EXCLUDED_CSS = /^_token_\./
 let css = ''
 const cssFiles = (await readdir(cssDir, { withFileTypes: true }))
-  .filter((f) => f.isFile() && extname(f.name) === '.css')
+  .filter((f) => f.isFile() && extname(f.name) === '.css' && !EXCLUDED_CSS.test(f.name))
   // entry.css carries the design tokens and resets, so it must come first.
   .sort((a, b) => (a.name.startsWith('entry') ? -1 : b.name.startsWith('entry') ? 1 : 0))
 

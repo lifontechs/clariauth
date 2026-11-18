@@ -86,19 +86,30 @@ async function onSubmit() {
   submitting.value = true
   try {
     if (endpoint.value) {
-      const res = await $fetch.raw(endpoint.value, {
+      await $fetch(endpoint.value, {
         method: 'POST',
-        body: { ...form, website: undefined, source: 'clariauth.com/contact' },
+        body: { ...form, source: 'clariauth.com/contact' },
       })
-      if (res.status >= 400) throw new Error(`Request failed (${res.status})`)
       await navigateTo('/thank-you')
     } else {
       // No endpoint configured — hand off to the visitor's mail client.
       window.location.href = mailtoFallback()
     }
-  } catch {
-    submitError.value =
-      'We could not submit the form just now. Please email us directly at ' + site.email + '.'
+  } catch (err: unknown) {
+    // The API returns field errors on 422; surface them next to the inputs
+    // rather than as a generic failure.
+    const data = (err as { data?: { data?: { errors?: Record<string, string>; message?: string } } })
+      ?.data?.data
+
+    if (data?.errors && Object.keys(data.errors).length) {
+      Object.assign(errors, data.errors)
+      await nextTick()
+      document.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus()
+    } else {
+      submitError.value =
+        data?.message ||
+        `We could not submit the form just now. Please email us directly at ${site.email}.`
+    }
   } finally {
     submitting.value = false
   }
