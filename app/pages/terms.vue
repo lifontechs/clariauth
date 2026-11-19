@@ -20,14 +20,6 @@ const updated = 'September 2026'
 
     <section class="section">
       <div class="container container--narrow prose">
-        <div class="notice">
-          <AppIcon name="alert" :size="20" />
-          <p>
-            This page is a starting template. Have it reviewed by counsel before the site goes
-            live and align it with your actual client services agreement.
-          </p>
-        </div>
-
         <h2>Acceptance</h2>
         <p>
           By accessing {{ site.url }} you agree to these terms. If you do not agree, please do not
@@ -98,29 +90,6 @@ const updated = 'September 2026'
 </template>
 
 <style scoped>
-.notice {
-  display: flex;
-  gap: 13px;
-  padding: 18px 20px;
-  background: #fdf7ec;
-  border: 1px solid #f0dcb8;
-  border-radius: var(--radius);
-  margin-bottom: 36px;
-}
-
-.notice svg {
-  color: #b3691a;
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-
-.notice p {
-  font-size: 0.92rem;
-  line-height: 1.6;
-  margin: 0;
-  color: #7a5214;
-}
-
 .prose h2:first-of-type {
   margin-top: 0;
 }

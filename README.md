@@ -152,7 +152,7 @@ nowhere else.
 - [ ] Confirm `NUXT_DATABASE_PATH` sits on a **persistent** disk, then submit a test lead and check it survives a redeploy
 - [ ] Put a backup on the SQLite file — it is the only copy of your leads
 - [ ] Update `linkedin` in `app/data/site.ts` to the real company page URL
-- [ ] **Have `/privacy-policy` and `/terms` reviewed by counsel** — both ship as marked templates
+- [ ] **Have `/privacy-policy` and `/terms` reviewed by counsel** — both are starting drafts, and the on-page notice saying so has been removed, so nothing on the live site flags them as unreviewed
 - [ ] Update the privacy policy to say submissions are stored on your own server, how long you keep them, and who can read them
 - [ ] Add a phone number to `app/data/site.ts` and the contact page if you want inbound calls
 - [ ] Verify the domain in Google Search Console and submit `/sitemap.xml`
